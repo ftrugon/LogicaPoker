@@ -18,7 +18,6 @@ class Baraja() {
         return cartaToReturn
     }
 
-
     fun barajar(){
         cartas.shuffle()
     }
