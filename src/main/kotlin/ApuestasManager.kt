@@ -4,6 +4,8 @@ class ApuestasManager {
 
     private val apuestasHechas = mutableListOf<Apuesta>()
 
+    fun obtenerApuestasHechas() = apuestasHechas
+
     fun hacerApuesta(jugador: Jugador, cantidad: Int) {
         apuestasHechas.add(Apuesta(jugador, cantidad))
     }

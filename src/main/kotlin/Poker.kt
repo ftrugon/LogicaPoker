@@ -3,7 +3,8 @@ package org.example
 class Poker(
     private val jugadores :MutableList<Jugador>,
     private val manosManager: ManosManager,
-    private val apuestasManager: ApuestasManager
+    private val apuestasManager: ApuestasManager,
+    private val potManager: PotManager
 ) {
 
     private val jugadoresActivos = jugadores
@@ -89,8 +90,8 @@ class Poker(
             println("1. Foldear")
             println("2. Apostar / Igualar (mínimo para igualar: $ultimaApuesta)")
 
-//            val opcion = readln().toIntOrNull()
-            val opcion = 2
+            val opcion = readln().toIntOrNull()
+//            val opcion = 2
             when (opcion) {
                 1 -> {
                     println("${jugador.nombre} se retira.")
@@ -100,8 +101,8 @@ class Poker(
                 }
                 2 -> {
                     println("¿Cuánto deseas apostar?")
-//                    val cantidadDeseada = readln().toIntOrNull() ?: 0
-                    val cantidadDeseada = 0
+                    val cantidadDeseada = readln().toIntOrNull() ?: 0
+//                    val cantidadDeseada = 0
                     val cantidadReal = minOf(jugador.dinero, cantidadDeseada)
 
                     jugador.dinero -= cantidadReal
@@ -140,8 +141,6 @@ class Poker(
         println("Cartas comunitarias: $cartasSobreMesa")
     }
 
-
-
     fun flop(){
         distribuirCartasComunitarias(3)
         calcularManosJugadores()
@@ -161,16 +160,23 @@ class Poker(
     }
 
     fun showdown(){
+
         elegirGanador()
+
     }
 
     fun elegirGanador(){
 
-        manosManager.compararManos(jugadoresActivos).forEach {
-            println("$it es un ganador")
-        }
+        val sidePots = potManager.calcularSidePots()
 
-        println()
+        for (i in sidePots.indices) {
+            val ganadores = manosManager.compararManos(sidePots[i].jugadores)
+            val premio = sidePots[i].monto / ganadores.size
+            ganadores.forEach {
+                println("${it.nombre} es un gandor del pot $i y se lleva $premio")
+                it.dinero += premio
+            }
+        }
 
 
     }
@@ -180,9 +186,5 @@ class Poker(
             jugador.mano = manosManager.calcularMano((jugador.cartas + cartasSobreMesa).sortedByDescending { it.valor.peso })
         }
     }
-
-
-
-
 
 }
