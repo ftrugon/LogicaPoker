@@ -81,9 +81,11 @@ class Poker(
 
             println("Turno de ${jugador.nombre} (dinero: ${jugador.dinero})")
             println("Tus cartas")
+            println()
             for (carta in jugador.cartas) {
-                println(carta)
+                print("$carta, ")
             }
+            println(" ---> Tu mano actual tiene ${jugador.mano?.ranking}")
             println("1. Foldear")
             println("2. Apostar / Igualar (mínimo para igualar: $ultimaApuesta)")
 
@@ -103,7 +105,6 @@ class Poker(
                     val cantidadReal = minOf(jugador.dinero, cantidadDeseada)
 
                     jugador.dinero -= cantidadReal
-                    cantidadReal
                     apuestasManager.hacerApuesta(jugador,cantidadReal)
 
                     if (cantidadReal > ultimaApuesta) {
@@ -165,7 +166,11 @@ class Poker(
 
     fun elegirGanador(){
 
-        println(manosManager.compararManos(jugadores))
+        manosManager.compararManos(jugadoresActivos).forEach {
+            println("$it es un ganador")
+        }
+
+        println()
 
 
     }

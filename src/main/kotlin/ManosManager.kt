@@ -121,7 +121,7 @@ class ManosManager {
         if (jugadoresOrdenados.value.size == 1){
             return jugadoresOrdenados.value
         }
-        if (jugadoresOrdenados.value.size <= 2){
+        if (jugadoresOrdenados.value.size >= 2){
 
 
 
